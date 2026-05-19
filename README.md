@@ -28,7 +28,7 @@ Or with pip:
     pip install -r requirements.txt
 
 ## Roadmap
-- [ ] Week 1: Scoping, data, setup
+- [/] Week 1: Scoping, data, setup
 - [ ] Week 2: EDA
 - [ ] Week 3: Feature engineering
 - [ ] Week 4: Classical ML (XGBoost, Random Forest)
