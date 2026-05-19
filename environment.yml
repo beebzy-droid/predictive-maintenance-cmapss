@@ -1,0 +1,14 @@
+name: predmaint
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - jupyter
+  - scikit-learn
+  - matplotlib
+  - pandas
+  - scipy
+  - seaborn
+  - numpy
+  - xgboost
+prefix: C:\Users\yubyu\anaconda3\envs\predmaint
