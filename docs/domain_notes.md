@@ -63,19 +63,22 @@
 ## 6. Published benchmarks (from papers I read)
 
 - **Paper 1: Asif et al. (2022). "A Deep Learning Model for Remaining Useful Life Prediction of Aircraft Turbofan Engine on C-MAPSS Dataset."**
-  - **Architecture:** 4-layer deep LSTM with dropout, followed by two fully connected layers and a regression output.
-  - **Features:** correlation-based sensor selection (14 of 21 sensors retained for FD001); moving-median filtering for noise reduction; z-score normalization; automated piecewise-linear RUL labeling to identify the degradation start point; grid search for hyperparameters.
-  - **FD001 RMSE / Score:** 7.78 / ~100 (near state-of-the-art at time of publication).
+
+  * **Architecture:** 4-layer deep LSTM with dropout, followed by two fully connected layers and a regression output.
+  * **Features:** correlation-based sensor selection (14 of 21 sensors retained for FD001); moving-median filtering for noise reduction; z-score normalization; automated piecewise-linear RUL labeling to identify the degradation start point; grid search for hyperparameters.
+  * **FD001 RMSE / Score:** 7.78 / ~100 (near state-of-the-art at time of publication).
 
 - **Paper 2: Peringal et al. (2024). "RUL Prediction for Aircraft Engines Using LSTM."**
-  - **Architecture:** Single LSTM network vs. MLP baseline (PyTorch), 20-timestep input sequences, Adam optimizer
-  - **Features:** Dropped 7 constant sensors, exponentially weighted moving average for smoothing, min-max normalization, 80/20 train/validation split
-  - **FD001 RMSE / Score:** LSTM MSE = 796.42 (no NASA score reported) MLP MSE = 1745 - paper focused on LSTM vs MLP comparison, not benchmarch competition
 
-- **Paper 3: Sayah et al. "Clustering-Based Deep LSTM for RUL Prediction."**
-  - **Architecture:** Distribution-based clustering determines the number of LSTM layers and cells automatically - fully connected NN output. Best model: L(12.10.7.2)N(2) - 4 LSTM layers with 12,10,7,2 cells
-  - **Features:** Sensor normalization, transaction based clustering via Weka, RUL cap at 130 cycles
-  - **FD001 RMSE / Score:** 14.08/308 competetive across all fous sub-datasets, especially strong on FD002 and FD004
+  * **Architecture:** Single LSTM network vs. MLP baseline (PyTorch), 20-timestep input sequences, Adam optimizer.
+  * **Features:** Dropped 7 constant sensors, exponentially weighted moving average for smoothing, min-max normalization, 80/20 train/validation split.
+  * **FD001 results:** LSTM MSE = 796.42 (≈ 28.2 RMSE) vs. MLP MSE = 1745. NASA score not reported. Note: the paper's stated goal was an LSTM-vs-MLP comparison, not a benchmark-competitive RMSE — these numbers are well above typical state-of-the-art (~12–16 RMSE), reflecting lighter preprocessing and label engineering than papers like Asif et al.
+
+- **Paper 3: Sayah et al. "Distribution Clustering-Based Deep LSTM for RUL Prediction."**
+
+  * **Architecture:** Distribution-based clustering determines the number of LSTM layers and cells automatically, followed by a fully connected NN output. Best model: L(12,10,7,2) N(2) — 4 LSTM layers with 12, 10, 7, and 2 cells respectively.
+  * **Features:** Sensor normalization, transaction-based clustering via Weka, RUL cap at 130 cycles.
+  * **FD001 RMSE / Score:** 14.08 / 308 — competitive across all four sub-datasets, especially strong on FD002 and FD004 where the multi-condition clustering approach shines.
 
 ## 7. Vocabulary cheat-sheet (for interviews)
 
