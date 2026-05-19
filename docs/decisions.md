@@ -123,3 +123,34 @@ Reasoning: Honest-tuned XGBoost achieves Test Score 207, placing it between Saya
 
 12 of the top 15 features by mean |SHAP value| are slopes. The four sensors flagged in Week 2 EDA as the most informative (sensors 4, 11, 12, 20) all rank in the SHAP top 15. The directional patterns in the SHAP summary plot match the rising/falling categorization: rising-sensor slopes push predictions DOWN when high, falling-sensor slopes push predictions DOWN when low. This is the strongest internal-consistency check in the project — three independent pieces of work (visual EDA in Week 2, quantitative slope-RUL correlations in Week 4 Task 2d, and trained-model SHAP attribution in Week 4 Task 6) all identify the same sensors as most predictive and assign the same directions. The cross-check confirms the model is learning real degradation physics, not memorizing noise.
 
+**2026-05-19** — **Moving-median preprocessing applied to all windows: kernel_size=10, post-normalization.**
+Reasoning: Asif et al. used moving-median smoothing as a key preprocessing step in their state-of-the-art FD001 LSTM (RMSE 7.78). The median filter removes cycle-to-cycle measurement noise without destroying long-term degradation trends — verified by raw-vs-smoothed slope correlations >0.95 and stable slope-RUL correlations. We applied the filter *after* z-score normalization rather than before, because rebuilding the entire Week 3 pipeline would take ~2 hours. The mathematical difference between smooth-then-normalize and normalize-then-smooth is small (z-scoring is linear), but worth documenting as a deliberate compromise rather than ignoring.
+
+**2026-05-19** — **Moving-median smoothing (kernel=10) on z-scored data weakens slope-vs-RUL signal across all sensors.**
+
+Observed effects:
+- Raw-vs-smoothed slope correlations: 0.91–0.99 (lower than the ≥0.95 expected)
+- Slope-vs-RUL correlations dropped on every sensor after smoothing: sensor_2 (-0.602 → -0.542), sensor_4 (-0.712 → -0.665), sensor_11 (-0.756 → -0.718), and similar drops on the others.
+
+Drops are small (~0.04 average) but systematically in one direction, indicating smoothing is removing some real signal along with noise. Likely cause: after z-score normalization, the "high-frequency content" of sensors isn't pure measurement noise — it includes fine structure (and in some sensors like sensor_17, discrete/quantized behavior) that carries information. Asif et al. applied median smoothing to *raw* sensor values where the high-frequency content was genuine measurement jitter; the same operation on z-scored data is more aggressive than warranted.
+
+**Decision:** Skip smoothing for the main LSTM run; train on identical inputs to XGBoost for a clean apples-to-apples comparison. Keep the smoothing experiment as a controlled ablation in Task 6 to document the negative finding.
+
+This is an honest negative result. The "Asif-style preprocessing helps" hypothesis didn't replicate when applied to post-normalization data in this project — likely because the order of operations matters more than I initially assumed.
+
+**2026-05-19** — **Vanilla LSTM (64-unit single layer, 22K params) underperforms XGBoost: Test RMSE 13.69 vs 11.62.**
+
+Both models trained on identical input (un-smoothed z-scored 30-cycle windows). The LSTM's training behavior is healthy — converged cleanly with early stopping at epoch 10, no instability. The 2.07-point RMSE gap is therefore not a training problem; it's an architecture problem. Likely under-capacity vs the implicit richness of 532-tree XGBoost. Will address with architecture tuning in Task 4 (larger units, more layers, possibly bidirectional). The Score gap (425 vs 207) widened proportionally more than the RMSE gap, suggesting the LSTM is making more "late" predictions — the asymmetrically penalized kind — than XGBoost.
+
+**2026-05-20** — **Final Week 5 result: LSTM-64×2 at Test RMSE 12.66, losing to XGBoost (11.62) by 1.04 points.**
+
+Tested six LSTM configurations: vanilla 64-unit, 128-unit, stacked 64×2, BiLSTM-64, BiLSTM-128, and Optuna-tuned 64×2. All six underperformed honest-tuned XGBoost on test RMSE. The best deep-learning result we can reproduce is LSTM-64×2 from the architecture sweep at Test RMSE 12.66 / Test Score 290.7. Reported this as the headline LSTM number rather than the Optuna-tuned variant (see next entry on winner's curse).
+
+**2026-05-20** — **Caught the winner's curse in LSTM hyperparameter tuning; chose reproducibility over peak performance.**
+
+Optuna tuning of LSTM-64×2 across 12 trials reported best val RMSE 11.77 (trial 10: LR=0.0027, dropout=0.38, dense=64). Retraining the model with identical hyperparameters and seed produced val RMSE 13.03 — a 1.26-point regression. The Optuna "winner" was a lucky seed sample rather than a genuinely better configuration. The seed-induced variance between trials (visible from trials 10 and 11 differing by 0.36 RMSE at near-identical hyperparameters) was larger than the apparent improvement from tuning. We chose to report the LSTM-64×2 architecture-sweep result (Test RMSE 12.66, reproducible) rather than the Optuna-tuned result (apparent Test RMSE 11.77, not reproducible). Documented as an honest engineering finding rather than papered over.
+
+**2026-05-20** — **Conclusion: classical methods (XGBoost) outperform deep methods (LSTM) on FD001 with matched preprocessing.**
+
+Three contributing factors: (1) the 70 engineered tabular features already encode the slope-based degradation signals that SHAP showed XGBoost relies on, leaving little for an LSTM to discover automatically; (2) the piecewise-linear RUL cap at 125 is structurally easier for trees (leaf rules can encode "predict 125 if healthy") than for LSTMs (which must learn the flat top through smooth nonlinearity); (3) without aggressive preprocessing innovations like Asif et al.'s raw-value moving-median smoothing, the LSTM is operating on the same noisy signal as XGBoost — and our Task 2 result showed that median smoothing on z-scored data degrades rather than improves signal. The honest portfolio takeaway: for this dataset and pipeline, deep learning's complexity is not warranted; a practitioner facing this problem would choose XGBoost.
+

@@ -22,6 +22,7 @@ data/processed/*.parquet
 data/processed/*.csv
 data/processed/*.npz
 data/processed/*.joblib
+data/processed/*.keras
 
 # OS
 Thumbs.db
