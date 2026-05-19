@@ -30,7 +30,7 @@ Or with pip:
 ## Roadmap
 - [x] Week 1: Scoping, data, setup
 - [x] Week 2: EDA
-- [ ] Week 3: Feature engineering
+- [x] Week 3: Feature engineering
 - [ ] Week 4: Classical ML (XGBoost, Random Forest)
 - [ ] Week 5: LSTM
 - [ ] Week 6: Evaluation & threshold optimization
