@@ -16,10 +16,12 @@ env/
 # VS Code
 .vscode/
 
-# Data - never commit raw data
+# Data — never commit raw data or processed arrays
 data/raw/
 data/processed/*.parquet
 data/processed/*.csv
+data/processed/*.npz
+data/processed/*.joblib
 
 # OS
 Thumbs.db
