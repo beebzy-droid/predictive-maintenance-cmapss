@@ -5,6 +5,14 @@
 ## Overview
 This project builds a predictive maintenance model for turbofan engine degradation using the NASA C-MAPSS dataset, as a proxy for rotating industrial equipment such as pumps and compressors. The goal is to predict whether an engine will fail within the next [N] operational cycles, with high recall on failure events and a tolerable false-alarm rate.
 
+## Current results (Week 4)
+
+Honest-tuned XGBoost on FD001:
+- **Test RMSE: 11.62** (competitive with published CNN approaches: 12–13)
+- **Test Score: 207** (between Sayah et al. clustering LSTM at 308 and Asif et al. deep LSTM with heavy preprocessing at ~100)
+
+The LSTM baseline in Week 5 will be measured against this benchmark.
+
 The project demonstrates the full ML lifecycle — EDA, feature engineering, classical and deep learning models, cost-aware evaluation, and a deployment-ready inference service — as applied to industrial sensor data.
 
 ## Why this dataset
@@ -31,7 +39,7 @@ Or with pip:
 - [x] Week 1: Scoping, data, setup
 - [x] Week 2: EDA
 - [x] Week 3: Feature engineering
-- [ ] Week 4: Classical ML (XGBoost, Random Forest)
+- [x] Week 4: Classical ML (XGBoost, Random Forest)
 - [ ] Week 5: LSTM
 - [ ] Week 6: Evaluation & threshold optimization
 - [ ] Week 7: Deployment demo
