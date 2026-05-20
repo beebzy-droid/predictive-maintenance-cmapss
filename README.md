@@ -1,7 +1,5 @@
 # 🏭 Predictive Maintenance — NASA C-MAPSS Turbofan Data
 
-**🚀 [Live demo on Hugging Face Spaces](https://huggingface.co/spaces/beebzy-droid/predictive-maintenance-cmapss)** · [GitHub repo](https://github.com/beebzy-droid/predictive-maintenance-cmapss)
-
 A full end-to-end ML system that predicts Remaining Useful Life (RUL) for turbofan engines using sensor time-series data — using NASA's C-MAPSS dataset as a proxy for industrial rotating equipment such as pumps and compressors. Built with engineering rigor visible at every layer: from leakage-aware data splits to honest classical-vs-deep comparison to an operationally-deployable web demo.
 
 ## 🎯 Project Overview
@@ -12,17 +10,7 @@ Built a complete predictive maintenance pipeline that takes 30-cycle sensor wind
 
 🔗 [Try it now on Hugging Face Spaces](https://huggingface.co/spaces/beebzy-droid/predictive-maintenance-cmapss)
 
-The live demo runs the XGBoost model only for hosting feasibility. The full version with both XGBoost and LSTM live inference + FastAPI backend can be run locally:
-
-```bash
-# Terminal 1 — FastAPI inference service (port 8000)
-uvicorn app.api:app --reload --port 8000
-
-# Terminal 2 — Streamlit dashboard (port 8501)
-streamlit run app/dashboard.py
-```
-
-Then open [http://localhost:8501](http://localhost:8501).
+The live demo runs the XGBoost model only for hosting feasibility. The full version with both XGBoost and LSTM live inference + FastAPI backend is available in this repo and runs locally.
 
 ## 🛠️ Tech Stack
 
@@ -142,6 +130,7 @@ Six lessons from building this project end-to-end, each tied to a specific momen
 
 ## 📁 Project Structure
 
+```
 predictive-maintenance-cmapss/
 ├── notebooks/                    → 01_eda → 05_operational
 ├── src/                          → Reusable modules: data, features, models, evaluate, sequence_models
@@ -160,6 +149,7 @@ predictive-maintenance-cmapss/
 ├── requirements.txt              → Clean dependencies with loose version pins
 └── README.md
 
+```
 ## 🤖 Why C-MAPSS as a proxy for industrial equipment
 
 Real plant data isn't publicly available. NASA's C-MAPSS is the standard benchmark in the Prognostics and Health Management (PHM) community, with run-to-failure trajectories for rotating turbofan engines. The degradation physics — bearings, seals, performance loss — maps conceptually to industrial pumps and compressors. C-MAPSS is the closest reproducible standard for an industrial-context ML portfolio project.
@@ -169,6 +159,10 @@ Real plant data isn't publicly available. NASA's C-MAPSS is the standard benchma
 - Saxena, A. and Goebel, K. (2008). "Turbofan Engine Degradation Simulation Data Set." NASA Prognostics Data Repository, NASA Ames Research Center, Moffett Field, CA.
 - Asif et al. (2022) — referenced as state-of-the-art LSTM benchmark with RMSE 7.78 on FD001.
 - Sayah et al. — referenced as clustering-LSTM baseline with RMSE 14.08.
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE) — free to use, modify, and distribute with attribution.
 
 ---
 
