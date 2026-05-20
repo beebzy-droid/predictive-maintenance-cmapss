@@ -20,6 +20,8 @@ Reference benchmarks from the literature:
 - Sayah et al. clustering LSTM: RMSE 14.08, Score 308
 - CNN approaches: RMSE 12–13
 
+**Reframed as an alarm classifier (Week 6):** the same XGBoost model achieves **F1 = 0.98** at alarm threshold T = 35 — catching all 25 failure-imminent engines in test with only 1 false alarm out of 75 healthy engines. The regression-RMSE framing under-sells the model's operational utility. See [`docs/production_readiness.md`](docs/production_readiness.md) for the deployment-engineering summary.
+
 XGBoost lands in the CNN-tier benchmark range. The LSTM closed half the gap to XGBoost through architecture tuning but did not overtake it. The honest interpretation: for this dataset with engineered tabular features, gradient-boosted trees outperform deep learning. Matching state-of-the-art results requires more preprocessing than this project's scope allows.
 
 ## Why this dataset
@@ -48,6 +50,6 @@ Or with pip:
 - [x] Week 3: Feature engineering
 - [x] Week 4: Classical ML (XGBoost, Random Forest)
 - [x] Week 5: LSTM
-- [ ] Week 6: Evaluation & threshold optimization
+- [x] Week 6: Evaluation & threshold optimization
 - [ ] Week 7: Deployment demo
 - [ ] Week 8: Polish & writeup
