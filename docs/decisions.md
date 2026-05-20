@@ -188,3 +188,14 @@ Synthesizes Tasks 1-4 of Week 6 into a single document a non-data-scientist coul
 
 The document is intended as an interview talking point and as a model for how to communicate ML results to non-technical stakeholders. The honest hedging (caveats section, "not ready for general production" stance) is the senior-engineer move; overselling readiness would be a red flag.
 
+**2026-05-20** — **Week 7: FastAPI + Streamlit demo built. Architecture: backend-frontend split with /predict/xgb and /predict/lstm endpoints.**
+
+Design choices:
+- Single-file Streamlit dashboard with three tabs (Live Prediction, Classical vs Deep, About) — preferred over multi-page `pages/` folder for simplicity and shared state
+- Models loaded lazily on first request in FastAPI (fast startup, slow first prediction)
+- Canned demo engines pre-extracted to `app/example_data/demo_engines.json` (6 engines, 1 critical-extreme + 1 critical-borderline + 1 watch-borderline + 1 watch-borderline + 1 healthy-borderline + 1 healthy-extreme)
+- CORS configured to allow localhost:8501 (Streamlit) to call localhost:8000 (FastAPI) from the browser
+- 11 new API tests (TestClient-based) bring the suite to 46 passing tests
+
+The LSTM is kept in the demo despite losing the Week 5 comparison. Rationale: the project's claim that classical methods outperform deep learning on FD001 is more credible when the deep model's actual behavior is *visible* to a viewer, not just referenced in a table. The LSTM hedging at the cap (~110 vs XGBoost's 125 on healthy engines) is on live display in the comparison tab.
+
