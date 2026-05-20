@@ -1,5 +1,7 @@
 # Predictive Maintenance on NASA C-MAPSS Turbofan Data
 
+**🚀 [Live demo on Hugging Face Spaces](https://huggingface.co/spaces/beebzy-droid/predictive-maintenance-cmapss)** · [GitHub repo](https://github.com/beebzy-droid/predictive-maintenance-cmapss)
+
 End-to-end ML system predicting Remaining Useful Life (RUL) for rotating equipment, using NASA's C-MAPSS turbofan dataset as a proxy for industrial pumps and compressors.
 
 **Test RMSE 11.62 · NASA Score 207 · F1 = 0.98 as a maintenance alarm at threshold T = 35.**
@@ -8,7 +10,9 @@ The same XGBoost model that scores a modest 11.62 RMSE on regression catches **1
 
 ## Live Demo
 
-Two commands to run the demo locally:
+**🚀 Try it right now:** [huggingface.co/spaces/beebzy-droid/predictive-maintenance-cmapss](https://huggingface.co/spaces/beebzy-droid/predictive-maintenance-cmapss)
+
+The live demo runs the **XGBoost model only** for hosting feasibility. The full version with both XGBoost and LSTM live inference + FastAPI backend can be run locally with two commands:
 
 ```bash
 # Terminal 1 — FastAPI inference service (port 8000)
